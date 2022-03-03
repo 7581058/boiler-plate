@@ -4,6 +4,8 @@ const port = 5000
 const bodyParser = require('body-parser');
 const { User } = require("./models/User");
 
+const config = require('./config/key');
+
 //application/x-www-form-urlencoded 분석,가져옴
 app.use(bodyParser.urlencoded({extended: true}));
 
@@ -11,7 +13,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
 const mongoose = require('mongoose')
-mongoose.connect('mongodb+srv://daseul:gamja1234@boilerplate.epmxx.mongodb.net/myFirstDatabase?retryWrites=true&w=majority', {
+mongoose.connect(config.mongoURI, {
 }).then(()=>console.log('mongoDB Connected...'))
   .catch(err=>console.log(err))
 
