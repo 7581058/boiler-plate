@@ -46,9 +46,18 @@ userSchema.pre('save',function(next){
         next()
       })
     })
+  } else{
+      next()
   }
 })
 
+userSchema.methods.comparePassword = function(plainPassword, cb){
+  //plainpassword 1234567 - 암호화된 비밀번호 : 해시값 ->을 비교하려면 플레인을 암호화하고 암호값이랑 비교 
+  bcrypt.compare(plainPassword, this.password, function(err, isMatch){
+    if(err) return cb(err),
+    cb(null, isMatch)
+  })
+}
 
 const User = mongoose.model('User', userSchema)
 
