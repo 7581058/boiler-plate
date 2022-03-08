@@ -65,11 +65,25 @@ userSchema.methods.generateToken = function(cb){
   //jsonwebtoken을 이용해 토큰 생성 
   var token = jwt.sign(user._id.toHexString(), 'seceretToken')
 
-  //user._id + 'secretToken' = token
+  //user._id + 'secretToken' = token   secretToken디코드 -> userid 나옴
   user.token = token
   user.save(function(err, user){
     if(err) return cb(err)
     cb(null, user)
+  })
+}
+
+userSchema.statics.findByToken = function(token, cb){
+  var user = this;
+  //user._id + '' = token
+  //토큰 디코드
+  jwt.verify(token, 'secretToken', function(err, decoded){
+    //유저아이디로 유저 찾기
+    //클라이언트에서 가져온 토큰과 디비에 보관된 토큰 일치하는지 확인
+    user.findOne({ "_id": decoded, "token:": token }, function(err, user){
+      if(err) return cb(err);
+      cb(null, user)
+    })
   })
 }
 
