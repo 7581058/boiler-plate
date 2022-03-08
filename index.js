@@ -3,7 +3,7 @@ const app = express()
 const port = 5000
 const bodyParser = require('body-parser');
 const { User } = require("./models/User");
-
+const cookieParser = require('cookie-parser');
 const config = require('./config/key');
 
 //application/x-www-form-urlencoded 분석,가져옴
@@ -11,6 +11,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 //application/json 분석,가져옴
 app.use(bodyParser.json());
+app.use(cookieParser());
 
 const mongoose = require('mongoose')
 mongoose.connect(config.mongoURI, {
@@ -34,7 +35,7 @@ app.post('/register', (req, res) => {
 
 app.post('/login', (req, res) => {
   //요청된 이메일 디비에서 찾기
-  User.findOne({email: req.body.email }, (err, user) => {
+  User.findOne({ email: req.body.email }, (err, user) => {
     if(!user){
       return res.json({
         loginSuccess: false,
@@ -48,9 +49,13 @@ app.post('/login', (req, res) => {
 
       //비밀번호 맞으면 토큰 생성
       user.generateToken((err, user) => {
-
+        if(err) return res.status(400).send(err);
+        
+        //쿠키에 토큰 저장 
+        res.cookie("x_auth", user.token)
+        .status(200)
+        .json({ loginSuccess: true, userId: user._id })
       })
-      
     }) 
   }) 
  
