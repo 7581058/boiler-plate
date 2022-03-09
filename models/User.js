@@ -63,7 +63,7 @@ userSchema.methods.comparePassword = function(plainPassword, cb){
 userSchema.methods.generateToken = function(cb){
   var user = this;
   //jsonwebtoken을 이용해 토큰 생성 
-  var token = jwt.sign(user._id.toHexString(), 'seceretToken')
+  var token = jwt.sign(user._id.toHexString(), 'secretToken')
 
   //user._id + 'secretToken' = token   secretToken디코드 -> userid 나옴
   user.token = token
@@ -73,7 +73,7 @@ userSchema.methods.generateToken = function(cb){
   })
 }
 
-userSchema.statics.findByToken = function(token, cb){
+userSchema.statics.findByToken = function( token, cb ){
   var user = this;
   //user._id + '' = token
   //토큰 디코드
@@ -89,5 +89,5 @@ userSchema.statics.findByToken = function(token, cb){
 
 const User = mongoose.model('User', userSchema)
 
-module.exports = {User}
+module.exports = { User }
 

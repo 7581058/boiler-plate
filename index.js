@@ -5,8 +5,8 @@ const bodyParser = require('body-parser');
 
 const cookieParser = require('cookie-parser');
 const config = require('./config/key');
-const { auth } = require("./middleware/auth");
-const { User } = require("./models/User");
+const { auth } = require('./middleware/auth');
+const { User } = require('./models/User');
 
 //application/x-www-form-urlencoded 분석,가져옴
 app.use(bodyParser.urlencoded({extended: true}));
@@ -62,7 +62,7 @@ app.post('/api/users/login', (req, res) => {
   }) 
 })
 
-app.get('/api/users/auth', auth,(req,res) => {
+app.get('/api/users/auth', auth,(req, res) => {
   //authentication이 true 
 
   res.status(200).json({
@@ -77,5 +77,20 @@ app.get('/api/users/auth', auth,(req,res) => {
     image: req.user.image
   })
 })
+
+
+app.get('/api/users/logout', auth, (req, res) => {
+  console.log(req.user)
+  User.findOneAndUpdate({ _id: req.user._id },
+    { token: "" }
+    , (err, user) => {
+      if(err) return res.json({ success: false, err});
+      return res.status(200).send({
+        success: true
+      })
+      }
+  )
+})
+
 
 app.listen(port, () => console.log(`example app listening on port ${port}!`))
