@@ -4,9 +4,9 @@ const port = 5000
 const bodyParser = require('body-parser');
 
 const cookieParser = require('cookie-parser');
-const config = require('./config/key');
-const { auth } = require('./middleware/auth');
-const { User } = require('./models/User');
+const config = require('./server/config/key');
+const { auth } = require('./server/middleware/auth');
+const { User } = require('./server/models/User');
 
 //application/x-www-form-urlencoded 분석,가져옴
 app.use(bodyParser.urlencoded({extended: true}));
@@ -88,8 +88,7 @@ app.get('/api/users/logout', auth, (req, res) => {
       return res.status(200).send({
         success: true
       })
-      }
-  )
+  })
 })
 
 
