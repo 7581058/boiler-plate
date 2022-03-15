@@ -4,9 +4,9 @@ const port = 5000
 const bodyParser = require('body-parser');
 
 const cookieParser = require('cookie-parser');
-const config = require('./server/config/key');
-const { auth } = require('./server/middleware/auth');
-const { User } = require('./server/models/User');
+const config = require('./config/key');
+const { auth } = require('./middleware/auth');
+const { User } = require('./models/User');
 
 //application/x-www-form-urlencoded 분석,가져옴
 app.use(bodyParser.urlencoded({extended: true}));
@@ -21,6 +21,10 @@ mongoose.connect(config.mongoURI, {
   .catch(err=>console.log(err))
 
 app.get('/', (req, res) => res.send('hello'))
+
+app.get('/api/hello', (req, res) => {
+  res.send("send")
+})
 
  //회원가입시 필요한 정보 클라이언트에서 가져오면 데이터베이스에 넣어줌 
 app.post('/api/users/register', (req, res) => {
