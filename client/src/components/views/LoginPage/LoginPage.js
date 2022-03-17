@@ -1,8 +1,8 @@
-import React, { useState } from 'react'
-import {useDispatch} from 'react-redux'
+import React, { useState } from 'react';
+import {useDispatch} from 'react-redux';
 import { loginUser } from '../../../_actions/user_actions';
 import { useNavigate } from "react-router-dom";
-function LoginPage(props) {
+function LoginPage() {
 
   const dispatch = useDispatch();
   const [Email, setEmail] = useState("")
@@ -29,7 +29,8 @@ function LoginPage(props) {
       .then(response => {
         if (response.payload.loginSuccess){
           //props.history.push('/')
-          navigate(-1);
+          //navigate(-1);
+          navigate("/");
         } else{
           alert('error')
         }
