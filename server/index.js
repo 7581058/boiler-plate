@@ -84,7 +84,8 @@ app.get('/api/users/auth', auth,(req, res) => {
 
 
 app.get('/api/users/logout', auth, (req, res) => {
-  console.log(req.user)
+  //console.log("표시"+req.user+"로그아웃")
+  
   User.findOneAndUpdate({ _id: req.user._id },
     { token: "" }
     , (err, user) => {

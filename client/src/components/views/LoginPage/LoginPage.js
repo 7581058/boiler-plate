@@ -29,8 +29,9 @@ function LoginPage() {
       .then(response => {
         if (response.payload.loginSuccess){
           //props.history.push('/')
-          //navigate(-1);
-          navigate("/");
+          //navigate(-1);navigate('/');
+          console.log("로그인성공");
+          
         } else{
           alert('error')
         }
